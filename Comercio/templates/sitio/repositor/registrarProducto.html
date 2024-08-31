@@ -1,0 +1,40 @@
+{% include 'sitio/repositor/cabecera.html' %}
+<main>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+                    <div class="card-body"> 
+                      <h4 class="card-title">Registrar producto</h4>
+                      <div class="mb-3">
+                        <br>
+                        <form action="/repositor/registrarProducto" method="post">
+                            <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="emailHelpId" placeholder="Nombre" />
+                            <br> 
+                            <input type="text" class="form-control" name="descripcion" id="descripcion" aria-describedby="emailHelpId" placeholder="Descripcion" />
+                            <br>
+                            <input type="number" class="form-control" name="stock" id="stock" aria-describedby="emailHelpId" placeholder="Stock"/>
+                            <br>
+                            <input type="number" class="form-control" name="stockMin" id="stockMin" aria-describedby="emailHelpId" placeholder="Stock Minimo"/>
+                            <br>
+                            <select class="custom-select my-1 mr-sm-2" id="categoria" name="categoria">
+                                {%for categoria in categorias%}
+                                <option value="{{ categoria[0] }}">{{ categoria[1] }}</option>
+                                {%endfor%}
+                            </select>
+                            <br>
+                            <input type="number" class="form-control" name="precioCompra" id="precioCompra" aria-describedby="emailHelpId" placeholder="Precio de Compra"/>
+                            <br>
+                            <input type="number" class="form-control" name="precioVenta" id="precioVenta" aria-describedby="emailHelpId" placeholder="Precio de Venta"/>
+                            <br>
+                            <button type="submit" class="btn btn-light">Registrar</button>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'sitio/repositor/pie.html' %}

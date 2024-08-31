@@ -1,0 +1,172 @@
+{% include 'admin/cabecera.html' %}
+<main>
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-3">
+        <div class="card card-primary" style="border-color: rgb(79, 78, 78);">
+          <div class="card-header">
+            <h3 class="card-title">Detalles de Venta</h3>
+          </div>
+          <form action="/admin/ventas/comprar" method="post">
+            <div class="card-body justify-content-center text-center align-items-center">
+              <div class="form-group justify-content-center text-center align-items-center">
+                <label>Total</label>
+                <input type="text" class="form-control text-center" value="${{ total }}" style="border-color: black;" disabled>
+              </div>
+              <br>
+              <div class="form-group justify-content-center text-center align-items-center">
+                <label>Cantidad de productos</label>
+                <input type="number" class="form-control text-center" value="{{cantProductos}}" style="border-color: black;" disabled>
+              </div>
+            </div>   
+            <br>
+            <div class="card-footer justify-content-center text-center align-items-center mb-1">
+              <button type="submit" class="btn btn-primary">Comprar</button>
+              <form action="/admin/ventas/cancelar">
+                <button type="submit" class="btn btn-danger">Cancelar</button>
+              </form>
+            </div>
+          </form>      
+        </div> 
+      </div>
+      <div class="col-9">
+        <div class="card card-primary" style="border-color: rgb(79, 78, 78);">
+          <div class="card-header">
+            <h3 class="card-title">PRODUCTOS</h3>
+          </div>
+          <table id="tabla" class="table table-striped display mx-auto justify-content-center text-center align-items-center">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Categoria</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Agregar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for producto in productos%}
+                <tr>
+                  <th>{{producto[0]}}</th>
+                  <td>{{producto[1]}}</td>
+                  <td>{{producto[2]}}</td>
+                  <td>
+                    {% for categoria in categorias %}
+                      {% if categoria[0]==producto[3] %}
+                        {{categoria[1]}}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                  <td>{{producto[5]}}</td>
+                  <td>{{producto[6]}}</td>
+                  <td>
+                    <form action="/admin/venta/agregarProducto" method="post">
+                      <input value="{{producto[0]}}" type="text" name="codigo" id="codigo" hidden>
+                      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modal{{producto[0]}}">+</button>                  
+                      <!-- Modal -->
+                      <div class="modal fade" id="modal{{producto[0]}}" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalTitle{{producto[0]}}">AGREGAR PRODUCTO AL CARRITO</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-fluid">
+                                <form action="/admin/venta/agregarProducto" method="post">
+                                  <div class="form-floating mb-3"">
+                                    <input type="number" class="form-control" id="codigo" name="codigo" value="{{producto[0]}}" placeholder="Codigo"  style="border-color: grey;" disabled>
+                                    <label for="codigo">Codigo</label>
+                                  </div>
+                                  <div class="form-floating">
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre" value="{{producto[1]}}" style="border-color: grey;" disabled>
+                                    <label for="usuario">Producto</label>
+                                  </div>
+                                  <br>
+                                  <div class="form-floating">
+                                    <input type="txt" class="form-control" id="descripcion" name="descripcion" value="{{producto[2]}}" placeholder="Descripcion" style="border-color: grey;" disabled>
+                                    <label for="descripcion">Descripcion</label>
+                                  </div>
+                                  <br>
+                                  <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="categoria" name="categoria" value="{{producto[3]}}" placeholder="categoria" style="border-color: grey;" disabled>
+                                    <label for="categoria">Categoria</label>
+                                  </div>
+                                  <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="precioCompra" name="precioCompra" value="${{producto[5]}}" placeholder="precioCompra" style="border-color: grey;" disabled>
+                                    <label for="precioCompra">Precio</label>
+                                  </div>
+                                  <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="stock" name="stock" value="{{producto[6]}}" placeholder="stock" style="border-color: grey;" disabled>
+                                    <label for="stock">Stock</label>
+                                  </div>
+                                  <div class="form-floating mb-3">
+                                    <input type="number" class="form-control text-center" id="cantidad" name="cantidad" placeholder="Cantidad" style="border-color: grey;" required>
+                                    <label for="stock">Cantidad</label>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Agregar producto</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>   
+                    </form>
+                  </td>
+                </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>  
+</main>
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- DataTables JavaScript -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<!-- Inicializar DataTables -->
+<script>
+  $(document).ready(function() {
+    $('#tabla').DataTable({
+      paging: true,      // Habilitar paginación
+      searching: true,   // Habilitar búsqueda
+      ordering: true,    // Habilitar clasificación
+      language: {
+        "decimal": ",",
+        "thousands": ".",
+        "lengthMenu": "Mostrar _MENU_ registros por página",
+        "zeroRecords": "No se encontraron resultados",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+        "infoFiltered": "(filtrado de _MAX_ registros en total)",
+        "search": "Buscar:",
+        "paginate": {
+            "first": "Primero",
+            "last": "Último",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        },
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "emptyTable": "No hay datos disponibles en la tabla",
+        "aria": {
+          "sortAscending": ": activar para ordenar la columna de manera ascendente",
+          "sortDescending": ": activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
+  });
+</script>
+{% include 'admin/pie.html' %}

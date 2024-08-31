@@ -1,0 +1,97 @@
+{% include 'admin/cabecera.html' %}
+<main>
+    <div class="container">
+        <br>
+        <div class="row" style="height: 200px;">
+          <div class="col-4">
+            <div class="card text-white bg-success mb-3" style=" height: 200px;">
+              <div class="card-header">VENTAS DIARIAS</div>
+              <div class="card-body">
+                <h4 class="card-text">DIA {{fecha}}</h4>
+                <p class="card-text">CANTIDAD DE VENTAS: {{cantVentasDiario}}</p>
+                <p class="card-text">RECAUDADO: {{recaudadoDiario}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card text-white bg-primary" style=" height: 200px;">
+              <div class="card-header">VENDIDO EN EL MES</div>
+              <div class="card-body">
+                <h4 class="card-text">MES: 0{{mes}}</h4>
+                <p class="card-text">CANTIDAD DE VENTAS: {{cantVentasMensuales}}</p>
+                <p class="card-text">RECAUDADO: {{recaudadoMensual}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card text-white bg-primary" style=" height: 200px;">
+              <div class="card-header">FINANZAS</div>
+              <div class="card-body">
+                <h4 class="card-text">MES: 0{{mes}}</h4>
+                <p class="card-text">GANANCIAS DIARIAS: {{gananciasDiarias}}</p>
+                <p class="card-text">GANANCIAS MENSUALES: {{gananciasMensuales}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row" style="height: 200px;">
+          <div class="col-4">
+              <div class="card text-white bg-danger" style="height: 200px;">
+              <div class="card-header">PRODUCTOS CON POCO STOCK</div>
+              <div class="card-body">
+                {% if pocoStock != [] %}
+                  <div class="card text-white bg-secondary mb-1" style="overflow-y: auto; max-height: 130px;">
+                    <ul class="list-group">  
+                      {% for producto in pocoStock %}  
+                        <li class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+                          {{producto[1]}} {{producto[2]}}
+                          <span class="badge bg-primary rounded-pill">STOCK: {{producto[6]}}</span>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% elif pocoStock == [] %}
+                  <h3>Stock Correcto</h3>
+                {% endif %}
+              </div>
+            </div>
+          </div>   
+          <div class="col-4">
+            <div class="card text-white bg-info" style="height: 200px;">
+            <div class="card-header">VENTAS POR VENDEDOR</div>
+            <div class="card-body">
+              <div class="card text-white bg-secondary mb-1" style="overflow-y: auto; max-height: 130px;">
+                <ul class="list-group">     
+                  {% for vendedor in vendedores %}  
+                    <li class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+                      {{vendedor[1]}}
+                      <span class="badge bg-primary rounded-pill">{{vendedor[2]}} Ventas</span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card text-white bg-info" style="height: 200px;">
+          <div class="card-header">RECAUDADO POR VENDEDOR</div>
+          <div class="card-body">
+            <div class="card text-white bg-secondary mb-1" style="overflow-y: auto; max-height: 130px;">
+              <ul class="list-group">     
+                {% for vendedor in vendedores %}  
+                  <li class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+                    {{vendedor[1]}}
+                    <span class="badge bg-primary rounded-pill">${{vendedor[3]}}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>   
+    </div>
+</main>
+
+{% include 'admin/pie.html' %}
